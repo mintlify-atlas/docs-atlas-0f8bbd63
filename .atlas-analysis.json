@@ -1,0 +1,112 @@
+{
+  "projectType": "general",
+  "projectName": "Design Patterns for Humans",
+  "projectDescription": "An ultra-simplified explanation to design patterns with real-world examples and code samples",
+  "theme": "almond",
+  "primaryColor": "#FF6B6B",
+  "lightColor": "#FFE66D",
+  "darkColor": "#4ECDC4",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "what-are-design-patterns"
+            ]
+          },
+          {
+            "group": "Creational Patterns",
+            "pages": [
+              "creational/overview",
+              "creational/simple-factory",
+              "creational/factory-method",
+              "creational/abstract-factory",
+              "creational/builder",
+              "creational/prototype",
+              "creational/singleton"
+            ]
+          },
+          {
+            "group": "Structural Patterns",
+            "pages": [
+              "structural/overview",
+              "structural/adapter",
+              "structural/bridge",
+              "structural/composite",
+              "structural/decorator",
+              "structural/facade",
+              "structural/flyweight",
+              "structural/proxy"
+            ]
+          },
+          {
+            "group": "Behavioral Patterns",
+            "pages": [
+              "behavioral/overview",
+              "behavioral/chain-of-responsibility",
+              "behavioral/command",
+              "behavioral/iterator",
+              "behavioral/mediator",
+              "behavioral/memento",
+              "behavioral/observer",
+              "behavioral/visitor",
+              "behavioral/strategy",
+              "behavioral/state",
+              "behavioral/template-method"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Reference",
+        "groups": [
+          {
+            "group": "Resources",
+            "pages": [
+              "reference/pattern-comparison",
+              "reference/best-practices",
+              "reference/faq"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Ultra-simplified explanations of 23 design patterns",
+    "Real-world examples for each pattern",
+    "Code samples in PHP demonstrating pattern implementation",
+    "Three categories: Creational, Structural, and Behavioral patterns",
+    "Clear guidance on when to use each pattern",
+    "Plain words explanations alongside formal definitions"
+  ],
+  "publicApiSurface": [
+    "Simple Factory - generates instances without exposing instantiation logic",
+    "Factory Method - delegates instantiation logic to child classes",
+    "Abstract Factory - groups related/dependent factories together",
+    "Builder - creates different flavors of objects while avoiding constructor pollution",
+    "Prototype - creates objects based on existing objects through cloning",
+    "Singleton - ensures only one object of a class is ever created",
+    "Adapter - wraps incompatible objects to make them compatible",
+    "Bridge - prefers composition over inheritance by separating abstraction from implementation",
+    "Composite - treats individual objects and compositions uniformly",
+    "Decorator - dynamically changes object behavior at runtime",
+    "Facade - provides simplified interface to complex subsystem",
+    "Flyweight - minimizes memory usage by sharing data with similar objects",
+    "Proxy - represents functionality of another class through a wrapper",
+    "Chain of Responsibility - builds a chain of objects to handle requests",
+    "Command - encapsulates actions in objects to decouple client from receiver",
+    "Iterator - provides way to access elements without exposing underlying presentation",
+    "Mediator - adds third party object to control interaction between objects",
+    "Memento - captures and stores current state for later restoration",
+    "Observer - notifies dependents when object changes state",
+    "Visitor - adds operations to objects without modifying them",
+    "Strategy - switches algorithm or strategy based on situation",
+    "State - changes class behavior when state changes",
+    "Template Method - defines algorithm skeleton while deferring steps to children"
+  ]
+}
