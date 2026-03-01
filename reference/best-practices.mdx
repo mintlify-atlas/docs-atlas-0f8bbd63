@@ -1,0 +1,305 @@
+---
+title: Best Practices
+description: Best practices and guidelines for using design patterns effectively
+---
+
+# Best Practices for Using Design Patterns
+
+Design patterns are powerful tools, but they must be used wisely. This guide covers essential best practices and common pitfalls to avoid.
+
+## Understanding Design Patterns
+
+### What Design Patterns Are
+
+Design patterns are **solutions to recurring problems** - guidelines on how to tackle certain problems. They are not:
+- Classes, packages, or libraries you can plug into your application
+- Magic solutions that automatically solve your problems
+- Finished designs that can be transformed directly into code
+
+Instead, they are:
+- Descriptions or templates for solving problems in many different situations
+- Guidelines on how to tackle certain problems in certain situations
+- General reusable solutions to commonly occurring problems
+
+<Note>
+Design patterns are solutions **to** problems, not solutions **finding** problems. They should emerge naturally from your design needs, not be forced into your codebase.
+</Note>
+
+## Critical Warnings
+
+<Warning>
+### Design Patterns Are Not a Silver Bullet
+
+Design patterns are not a magical solution to all your problems. They are tools that can help when used appropriately, but they won't solve every design challenge you face.
+</Warning>
+
+<Warning>
+### Do Not Force Patterns
+
+Do not try to force design patterns into your code. Bad things are supposed to happen if you do so. Let patterns emerge naturally from your design needs rather than looking for places to apply them.
+</Warning>
+
+<Warning>
+### Don't Overthink
+
+Keep in mind that design patterns are solutions **to** problems, not solutions **finding** problems. Don't overthink your design by trying to apply patterns where they're not needed.
+</Warning>
+
+## When to Use Design Patterns
+
+### Use Patterns When:
+
+1. **You recognize a recurring problem** that matches a known pattern
+2. **The benefits outweigh the complexity** - patterns add abstraction, which has a cost
+3. **You need flexibility** for future changes in that area of the code
+4. **The problem is clearly defined** and the pattern is a good fit
+5. **Your team understands the pattern** you're planning to use
+
+### Avoid Patterns When:
+
+1. **A simpler solution exists** - don't use a pattern just to use a pattern
+2. **Requirements are unclear** - wait until you understand the problem better
+3. **The codebase is small** - patterns add abstraction that may not be worth it
+4. **You're pattern matching** - forcing a pattern because it seems cool
+5. **The team is unfamiliar** with the pattern and learning it won't add value
+
+## Pattern-Specific Best Practices
+
+### Creational Patterns
+
+<AccordionGroup>
+  <Accordion title="Simple Factory">
+    **When to use**: When creating an object involves some logic beyond simple assignments.
+    
+    **Best practice**: Use when you find yourself repeating the same instantiation logic in multiple places.
+  </Accordion>
+
+  <Accordion title="Factory Method">
+    **When to use**: When the client doesn't know what exact sub-class it might need.
+    
+    **Best practice**: Use when there is generic processing in a class but the required sub-class is dynamically decided at runtime.
+  </Accordion>
+
+  <Accordion title="Abstract Factory">
+    **When to use**: When there are interrelated dependencies with not-that-simple creation logic.
+    
+    **Best practice**: Use for families of related objects that need to be created together.
+  </Accordion>
+
+  <Accordion title="Builder">
+    **When to use**: When there could be several flavors of an object.
+    
+    **Best practice**: Use to avoid the telescoping constructor anti-pattern. The key difference from factory is that factory is a one-step process while builder is a multi-step process.
+  </Accordion>
+
+  <Accordion title="Prototype">
+    **When to use**: When creation would be expensive compared to cloning.
+    
+    **Best practice**: Use when you need an object similar to an existing object.
+  </Accordion>
+
+  <Accordion title="Singleton">
+    **When to use**: When exactly one object is needed to coordinate actions across the system.
+    
+    **Warning**: Singleton is considered an anti-pattern and overuse should be avoided. It introduces global state and makes code tightly coupled and difficult to test.
+    
+    **Best practice**: Use with extreme caution. Consider dependency injection as an alternative.
+  </Accordion>
+</AccordionGroup>
+
+### Structural Patterns
+
+<AccordionGroup>
+  <Accordion title="Adapter">
+    **When to use**: To make existing classes work with others without modifying their source code.
+    
+    **Best practice**: Use when you need to integrate third-party libraries or legacy code with incompatible interfaces.
+  </Accordion>
+
+  <Accordion title="Bridge">
+    **When to use**: When you want abstraction and implementation to vary independently.
+    
+    **Best practice**: Prefer composition over inheritance to separate concerns.
+  </Accordion>
+
+  <Accordion title="Composite">
+    **When to use**: To compose objects into tree structures representing part-whole hierarchies.
+    
+    **Best practice**: Use when you need to treat individual objects and compositions uniformly.
+  </Accordion>
+
+  <Accordion title="Decorator">
+    **When to use**: When you need to add behavior dynamically without affecting other objects.
+    
+    **Best practice**: Useful for adhering to the Single Responsibility Principle by dividing functionality between classes.
+  </Accordion>
+
+  <Accordion title="Facade">
+    **When to use**: When you need a simplified interface to a complex subsystem.
+    
+    **Best practice**: Use to hide complexity and provide a cleaner API to clients.
+  </Accordion>
+
+  <Accordion title="Flyweight">
+    **When to use**: When memory usage is a concern and you have many similar objects.
+    
+    **Best practice**: Share as much data as possible between similar objects to minimize memory footprint.
+  </Accordion>
+
+  <Accordion title="Proxy">
+    **When to use**: When you need to add extra functionality before/after accessing an object.
+    
+    **Best practice**: Use for lazy initialization, access control, logging, or caching.
+  </Accordion>
+</AccordionGroup>
+
+### Behavioral Patterns
+
+<AccordionGroup>
+  <Accordion title="Chain of Responsibility">
+    **When to use**: When you have multiple potential handlers for a request.
+    
+    **Best practice**: Build a chain where each handler can process the request or pass it to the next handler.
+  </Accordion>
+
+  <Accordion title="Command">
+    **When to use**: When you need to queue operations, implement undo, or decouple sender from receiver.
+    
+    **Best practice**: Encapsulate all information needed to perform an action into a command object.
+  </Accordion>
+
+  <Accordion title="Iterator">
+    **When to use**: When you need to traverse a collection without exposing its internal structure.
+    
+    **Best practice**: Use built-in language iterators when possible; implement custom only when needed.
+  </Accordion>
+
+  <Accordion title="Mediator">
+    **When to use**: To reduce coupling between communicating objects.
+    
+    **Best practice**: Centralize complex communications and control logic in one place.
+  </Accordion>
+
+  <Accordion title="Memento">
+    **When to use**: When you need to provide undo functionality.
+    
+    **Best practice**: Useful for saving and restoring object state without violating encapsulation.
+  </Accordion>
+
+  <Accordion title="Observer">
+    **When to use**: When multiple objects need to be notified of state changes.
+    
+    **Best practice**: Establish a one-to-many dependency between objects.
+  </Accordion>
+
+  <Accordion title="Visitor">
+    **When to use**: To add new operations without modifying existing object structures.
+    
+    **Best practice**: Use when you need to perform operations across a set of objects with different types.
+  </Accordion>
+
+  <Accordion title="Strategy">
+    **When to use**: When you want to select algorithm behavior at runtime.
+    
+    **Best practice**: Define a family of algorithms, encapsulate each one, and make them interchangeable.
+  </Accordion>
+
+  <Accordion title="State">
+    **When to use**: When object behavior depends on its state.
+    
+    **Best practice**: Encapsulate state-specific behavior and delegate to the current state object.
+  </Accordion>
+
+  <Accordion title="Template Method">
+    **When to use**: To define algorithm skeleton while letting subclasses override specific steps.
+    
+    **Best practice**: Use when you have a common algorithm structure with varying implementations.
+  </Accordion>
+</AccordionGroup>
+
+## General Guidelines
+
+### 1. Correct Place, Correct Manner
+
+<Note>
+If used in a correct place in a correct manner, design patterns can prove to be a savior. Otherwise, they can result in a horrible mess of a code.
+</Note>
+
+- Ensure the pattern truly fits your problem
+- Consider simpler alternatives first
+- Verify the pattern solves your actual need
+
+### 2. Start Simple
+
+Begin with the simplest solution that could work:
+1. Write straightforward code first
+2. Identify patterns emerging from refactoring
+3. Apply patterns when complexity justifies them
+4. Refactor to patterns rather than starting with them
+
+### 3. Know Your Patterns
+
+- Understand the intent of each pattern
+- Know when each pattern applies
+- Recognize the trade-offs involved
+- Study real-world examples
+
+### 4. Communicate Clearly
+
+- Use pattern names in discussions and code comments
+- Document why you chose a particular pattern
+- Ensure team members understand the patterns used
+- Keep patterns discoverable through clear naming
+
+### 5. Balance Flexibility and Simplicity
+
+- Don't over-engineer for hypothetical future needs
+- Add patterns when you need the flexibility, not before
+- Remember: YAGNI (You Aren't Gonna Need It)
+- Refactor when requirements actually change
+
+## Common Pitfalls to Avoid
+
+<Warning>
+### Pattern Obsession
+Don't become obsessed with using design patterns everywhere. Some problems are best solved with simple, straightforward code.
+</Warning>
+
+### Anti-Patterns to Watch For
+
+1. **Golden Hammer**: Using your favorite pattern for every problem
+2. **Pattern Overload**: Using too many patterns in one area
+3. **Premature Optimization**: Adding patterns "just in case"
+4. **Copy-Paste Patterns**: Implementing patterns without understanding them
+5. **Pattern Sprawl**: Patterns that spread unnecessarily across the codebase
+
+## Testing and Patterns
+
+### Patterns Should Aid Testing
+
+Well-applied patterns should:
+- Make code easier to test
+- Reduce coupling for better unit tests
+- Enable mocking and stubbing
+- Improve testability through clear interfaces
+
+### Warning Signs
+
+If a pattern makes testing harder:
+- Reconsider if it's the right pattern
+- Check if you're applying it correctly
+- Consider if you actually need it
+
+## Conclusion
+
+Design patterns are powerful tools when used appropriately. Remember:
+
+- They are solutions to problems, not problems seeking solutions
+- Not every problem needs a pattern
+- Simplicity often beats clever complexity
+- Let patterns emerge from real needs
+- The best code is often the simplest code that works
+
+<Note>
+Master the principles behind the patterns, not just the patterns themselves. Understanding **why** a pattern works is more valuable than memorizing **how** to implement it.
+</Note>

@@ -1,0 +1,225 @@
+---
+title: 'Facade Pattern'
+description: 'Provide a simplified interface to a complex subsystem'
+---
+
+## Real World Example
+
+<Note>
+How do you turn on the computer? "Hit the power button" you say! That is what you believe because you are using a simple interface that computer provides on the outside, internally it has to do a lot of stuff to make it happen. This simple interface to the complex subsystem is a facade.
+</Note>
+
+## In Plain Words
+
+Facade pattern provides a simplified interface to a complex subsystem.
+
+## Wikipedia Definition
+
+> A facade is an object that provides a simplified interface to a larger body of code, such as a class library.
+
+## Programmatic Example
+
+Taking our computer example from above. Here we have the computer class:
+
+```php
+class Computer
+{
+    public function getElectricShock()
+    {
+        echo "Ouch!";
+    }
+
+    public function makeSound()
+    {
+        echo "Beep beep!";
+    }
+
+    public function showLoadingScreen()
+    {
+        echo "Loading..";
+    }
+
+    public function bam()
+    {
+        echo "Ready to be used!";
+    }
+
+    public function closeEverything()
+    {
+        echo "Bup bup bup buzzzz!";
+    }
+
+    public function sooth()
+    {
+        echo "Zzzzz";
+    }
+
+    public function pullCurrent()
+    {
+        echo "Haaah!";
+    }
+}
+```
+
+Here we have the facade:
+
+```php
+class ComputerFacade
+{
+    protected $computer;
+
+    public function __construct(Computer $computer)
+    {
+        $this->computer = $computer;
+    }
+
+    public function turnOn()
+    {
+        $this->computer->getElectricShock();
+        $this->computer->makeSound();
+        $this->computer->showLoadingScreen();
+        $this->computer->bam();
+    }
+
+    public function turnOff()
+    {
+        $this->computer->closeEverything();
+        $this->computer->pullCurrent();
+        $this->computer->sooth();
+    }
+}
+```
+
+Now to use the facade:
+
+```php
+$computer = new ComputerFacade(new Computer());
+$computer->turnOn(); // Ouch! Beep beep! Loading.. Ready to be used!
+$computer->turnOff(); // Bup bup buzzz! Haah! Zzzzz
+```
+
+## Key Participants
+
+<AccordionGroup>
+  <Accordion title="Facade">
+    Provides a simple interface to the complex subsystem (in our example: `ComputerFacade`)
+  </Accordion>
+  
+  <Accordion title="Subsystem Classes">
+    Implement subsystem functionality and handle work assigned by the Facade (in our example: `Computer` and its methods)
+  </Accordion>
+  
+  <Accordion title="Client">
+    Uses the Facade instead of calling subsystem objects directly
+  </Accordion>
+</AccordionGroup>
+
+## Before and After Facade
+
+### Without Facade
+
+```php
+$computer = new Computer();
+$computer->getElectricShock();
+$computer->makeSound();
+$computer->showLoadingScreen();
+$computer->bam();
+// Client needs to know all the steps!
+```
+
+### With Facade
+
+```php
+$computerFacade = new ComputerFacade(new Computer());
+$computerFacade->turnOn();
+// Simple and clean!
+```
+
+## When to Use?
+
+<Info>
+Use the Facade pattern when:
+- You want to provide a simple interface to a complex subsystem
+- There are many dependencies between clients and implementation classes
+- You want to layer your subsystems
+- You need to decouple a subsystem from clients and other subsystems
+</Info>
+
+## Benefits
+
+- **Simplicity**: Provides a simple interface to a complex system
+- **Decoupling**: Shields clients from subsystem components
+- **Layering**: Helps structure your application into layers
+- **Easier Testing**: Makes the subsystem easier to test
+- **Flexibility**: You can still access subsystem classes directly if needed
+
+## Facade vs Direct Access
+
+<Note>
+The Facade pattern doesn't prevent you from accessing the subsystem classes directly. It simply provides a convenient higher-level interface. Clients can choose to use the facade or access subsystem classes directly based on their needs.
+</Note>
+
+## Real-World Applications
+
+<CardGroup cols={2}>
+  <Card title="API Wrappers" icon="code">
+    Simplifying complex third-party APIs
+  </Card>
+  
+  <Card title="Database Access" icon="database">
+    Hiding complex database operations
+  </Card>
+  
+  <Card title="Framework Services" icon="gears">
+    Laravel facades for accessing services
+  </Card>
+  
+  <Card title="Payment Gateways" icon="credit-card">
+    Simplifying payment processing APIs
+  </Card>
+</CardGroup>
+
+## Considerations
+
+<Warning>
+- A facade can become a god object coupled to all classes of an app if not designed carefully
+- Don't use facade to hide poorly designed subsystems - fix the design instead
+- Facades should provide a simpler interface, not just wrap everything
+</Warning>
+
+## Example: Payment Processing Facade
+
+```php
+// Complex subsystem
+class PaymentValidator { /* ... */ }
+class PaymentGateway { /* ... */ }
+class TransactionLogger { /* ... */ }
+class EmailNotifier { /* ... */ }
+
+// Simple facade
+class PaymentFacade
+{
+    public function processPayment($amount, $card)
+    {
+        $validator = new PaymentValidator();
+        $validator->validate($card);
+        
+        $gateway = new PaymentGateway();
+        $result = $gateway->charge($amount, $card);
+        
+        $logger = new TransactionLogger();
+        $logger->log($result);
+        
+        $notifier = new EmailNotifier();
+        $notifier->sendReceipt($result);
+        
+        return $result;
+    }
+}
+```
+
+## Related Patterns
+
+- **Abstract Factory**: Can be used with Facade to provide an interface for creating subsystem objects
+- **Mediator**: Similar to Facade in that it abstracts functionality, but Mediator's purpose is to abstract arbitrary communication between objects
+- **Singleton**: Facade objects are often Singletons

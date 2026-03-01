@@ -1,0 +1,413 @@
+---
+title: Frequently Asked Questions
+description: Common questions about design patterns and their usage
+---
+
+# Frequently Asked Questions
+
+Answers to common questions about design patterns, based on Design Patterns for Humans.
+
+## General Questions
+
+<AccordionGroup>
+  <Accordion title="What are design patterns?">
+    Design patterns are **solutions to recurring problems** - guidelines on how to tackle certain problems. They are not classes, packages, or libraries that you can plug into your application and wait for the magic to happen.
+    
+    Instead, they are descriptions or templates for how to solve a problem that can be used in many different situations. Think of them as battle-tested best practices for common software design challenges.
+
+    According to Wikipedia: "In software engineering, a software design pattern is a general reusable solution to a commonly occurring problem within a given context in software design. It is not a finished design that can be transformed directly into source or machine code."
+  </Accordion>
+
+  <Accordion title="Are design patterns a silver bullet?">
+    **No, absolutely not.** This is one of the most important things to understand about design patterns.
+
+    Design patterns are not a silver bullet to all your problems. They are tools that can help when used appropriately, but they won't magically solve every design challenge you face.
+
+    Using patterns incorrectly or unnecessarily can actually make your code worse - more complex, harder to understand, and more difficult to maintain.
+  </Accordion>
+
+  <Accordion title="Should I try to use design patterns everywhere in my code?">
+    **No!** Do not try to force design patterns into your code. Bad things are supposed to happen if you do so.
+
+    Keep in mind that design patterns are solutions **to** problems, not solutions **finding** problems. Don't overthink your design by looking for places to apply patterns.
+
+    Let patterns emerge naturally from your design needs. If a pattern solves a real problem you're facing, great! If not, simple straightforward code is often better.
+  </Accordion>
+
+  <Accordion title="What happens if I use patterns in the wrong place?">
+    If used in a correct place in a correct manner, design patterns can prove to be a savior. However, if used incorrectly, they can result in a horrible mess of code.
+
+    Wrong usage can lead to:
+    - Unnecessary complexity
+    - Harder to understand code
+    - More difficult maintenance
+    - Over-engineered solutions
+    - Confused team members
+    - Reduced code flexibility
+
+    Always evaluate whether the pattern truly fits your problem before applying it.
+  </Accordion>
+
+  <Accordion title="What are the three main categories of design patterns?">
+    Design patterns are organized into three main categories:
+
+    1. **Creational Patterns**: Focused on how to instantiate an object or group of related objects. They deal with object creation mechanisms.
+
+    2. **Structural Patterns**: Concerned with object composition - how entities can use each other. They help answer "How to build a software component?"
+
+    3. **Behavioral Patterns**: Concerned with assignment of responsibilities between objects. They outline patterns for message passing and communication. They help answer "How to run a behavior in software component?"
+  </Accordion>
+
+  <Accordion title="How many design patterns are there?">
+    The classic "Gang of Four" book describes 23 fundamental design patterns:
+    - 6 Creational patterns (including Simple Factory)
+    - 7 Structural patterns
+    - 10 Behavioral patterns
+
+    These are considered the core patterns that every developer should be familiar with. However, many other patterns have been identified since then for specific domains and technologies.
+  </Accordion>
+</AccordionGroup>
+
+## Creational Patterns
+
+<AccordionGroup>
+  <Accordion title="What's the difference between Simple Factory, Factory Method, and Abstract Factory?">
+    These three patterns are often confused but serve different purposes:
+
+    **Simple Factory**:
+    - Simply generates an instance without exposing instantiation logic
+    - Use when creating an object involves some logic beyond simple assignments
+    - Not actually part of the original GoF patterns
+
+    **Factory Method**:
+    - Delegates the instantiation logic to child classes
+    - Use when there's generic processing but the required sub-class is dynamically decided at runtime
+    - The client doesn't know what exact sub-class it needs
+
+    **Abstract Factory**:
+    - A factory of factories - groups related/dependent factories together
+    - Use when there are interrelated dependencies with complex creation logic
+    - Creates families of related objects
+
+    **Key difference**: Simple Factory is about encapsulating creation, Factory Method is about deferring creation to subclasses, and Abstract Factory is about creating families of related objects.
+  </Accordion>
+
+  <Accordion title="When should I use Builder vs Factory?">
+    The key difference is the complexity of the construction process:
+
+    **Use Factory when**:
+    - Creation is a **one-step process**
+    - The object can be created and returned immediately
+    - Example: Making different types of doors
+
+    **Use Builder when**:
+    - Creation is a **multi-step process**
+    - You need to avoid the telescoping constructor anti-pattern
+    - There could be several flavors of an object
+    - You want to construct an object step by step
+    - Example: Building a customized burger with many optional toppings
+
+    Builder is particularly useful when you have many optional parameters that would lead to constructor pollution (many parameters that are hard to remember and use).
+  </Accordion>
+
+  <Accordion title="Is Singleton an anti-pattern? Should I avoid it?">
+    Yes, Singleton is actually considered an anti-pattern by many developers, and overuse of it should be avoided.
+
+    **Problems with Singleton**:
+    - Introduces global state in your application
+    - Makes your code tightly coupled
+    - Makes mocking difficult in tests
+    - Can hide dependencies
+    - Can cause issues in multi-threaded environments
+
+    **However**, there are some valid use-cases:
+    - When exactly one object is needed to coordinate actions across the system
+    - For things like logging, driver objects, caching, etc.
+
+    **Best practice**: Use with caution. Consider dependency injection as an alternative approach that provides similar benefits without the drawbacks.
+  </Accordion>
+
+  <Accordion title="When should I use Prototype pattern?">
+    Use Prototype pattern when:
+    - An object is required that is similar to an existing object
+    - The creation would be expensive compared to cloning
+    - You want to avoid the overhead of initializing an object
+
+    Think of Dolly the sheep - instead of going through the trouble of creating an object from scratch, you clone an existing object and modify it to your needs.
+
+    In many languages, cloning is built-in (like PHP's `clone` keyword), making this pattern easy to implement.
+  </Accordion>
+</AccordionGroup>
+
+## Structural Patterns
+
+<AccordionGroup>
+  <Accordion title="What's the difference between Adapter and Facade?">
+    Both simplify interfaces, but with different intents:
+
+    **Adapter**:
+    - Makes two incompatible interfaces work together
+    - Wraps an existing class with a new interface
+    - Like a card reader adapting your memory card to work with your computer
+    - Use when you need to integrate incompatible interfaces
+
+    **Facade**:
+    - Provides a simplified interface to a complex subsystem
+    - Creates a new, simpler interface to existing complex code
+    - Like a computer power button hiding all the complex startup processes
+    - Use when you want to hide complexity
+
+    **Key difference**: Adapter makes existing interfaces compatible, while Facade creates a new simplified interface.
+  </Accordion>
+
+  <Accordion title="When should I use Decorator vs inheritance?">
+    Use **Decorator** when:
+    - You need to add behavior dynamically at runtime
+    - You want to add responsibilities to individual objects, not entire classes
+    - You want to avoid creating an explosion of subclasses
+    - You need combinations of behaviors (like coffee with milk, whip, and vanilla)
+
+    Use **Inheritance** when:
+    - The behavior is fundamental to the type
+    - All instances of the class should have this behavior
+    - The behavior won't change at runtime
+    - You're modeling an "is-a" relationship
+
+    Decorator pattern is often useful for adhering to the Single Responsibility Principle by dividing functionality between classes with unique areas of concern.
+  </Accordion>
+
+  <Accordion title="What's the telescoping constructor anti-pattern that Builder solves?">
+    The telescoping constructor anti-pattern occurs when you have a constructor with many parameters:
+
+    ```php
+    public function __construct($size, $cheese = true, $pepperoni = true, 
+                               $tomato = false, $lettuce = true)
+    {
+    }
+    ```
+
+    **Problems**:
+    - The number of constructor parameters can quickly get out of hand
+    - It becomes difficult to understand the arrangement of parameters
+    - The parameter list could keep growing as you add more options
+    - Easy to make mistakes with parameter order
+
+    **Builder pattern solution**:
+    - Provides a fluent interface for construction
+    - Makes the code more readable
+    - Allows optional parameters without constructor pollution
+    - Example: `new BurgerBuilder(14)->addPepperoni()->addLettuce()->build()`
+  </Accordion>
+
+  <Accordion title="What's the difference between Proxy and Decorator?">
+    These patterns have similar structures but different intents:
+
+    **Proxy**:
+    - Controls access to the object
+    - Often manages the lifecycle of the real object
+    - Examples: lazy loading, access control, logging
+    - The proxy represents the object
+
+    **Decorator**:
+    - Adds new behavior to the object
+    - Enhances or modifies existing behavior
+    - Can stack multiple decorators
+    - Examples: adding toppings to coffee
+
+    Both wrap objects, but Proxy is about controlling access while Decorator is about adding responsibilities.
+  </Accordion>
+</AccordionGroup>
+
+## Behavioral Patterns
+
+<AccordionGroup>
+  <Accordion title="What's the difference between Strategy and State patterns?">
+    These patterns are structurally similar but serve different purposes:
+
+    **Strategy**:
+    - Allows switching algorithms/strategies based on the situation
+    - The client usually chooses the strategy
+    - Example: Choosing between bubble sort and quick sort based on data size
+
+    **State**:
+    - Changes behavior when the object's state changes
+    - State transitions happen internally
+    - Example: A phone behaving differently when idle, picked up, or calling
+
+    **Key insight**: State can be interpreted as a Strategy that is able to switch the current strategy through invocations of methods defined in the pattern's interface.
+  </Accordion>
+
+  <Accordion title="When should I use Observer pattern?">
+    Use Observer pattern when:
+    - Multiple objects need to be notified of state changes in another object
+    - You want to establish a one-to-many dependency between objects
+    - Changes to one object require changing others, and you don't know how many
+    - An object should notify others without knowing who they are
+
+    **Real-world examples**:
+    - Job seekers subscribing to job postings
+    - Newsletter subscriptions
+    - Event listeners in UI frameworks
+    - Pub/sub messaging systems
+
+    The pattern defines a dependency between objects so that whenever an object changes its state, all its dependents are notified.
+  </Accordion>
+
+  <Accordion title="When do I need Chain of Responsibility?">
+    Use Chain of Responsibility when:
+    - You have multiple potential handlers for a request
+    - You want to give more than one object a chance to handle a request
+    - You want to avoid coupling the sender to the receiver
+    - The handlers should be chained in a specific order
+
+    **Real-world example**: Payment processing where you try account A, then B, then C until one can handle the amount.
+
+    The request enters from one end and keeps going from object to object till it finds the suitable handler.
+  </Accordion>
+
+  <Accordion title="What's the difference between Command and Strategy?">
+    Both encapsulate behavior, but differently:
+
+    **Command**:
+    - Encapsulates a request as an object
+    - Focuses on encapsulating actions/operations
+    - Supports undo/redo functionality
+    - Can queue or log operations
+    - Example: Remote control buttons
+
+    **Strategy**:
+    - Encapsulates an algorithm
+    - Focuses on interchangeable algorithms
+    - No built-in undo/redo
+    - Selects algorithm at runtime
+    - Example: Different sorting algorithms
+
+    Command is about encapsulating actions for later execution, while Strategy is about choosing between algorithms.
+  </Accordion>
+
+  <Accordion title="When should I implement Iterator vs use language built-ins?">
+    **Use language built-ins when**:
+    - The language provides adequate iteration support
+    - You're working with standard collections
+    - The default iteration order is what you need
+
+    **Implement custom Iterator when**:
+    - You need a special traversal algorithm
+    - You're creating a custom collection
+    - You need multiple simultaneous iterations
+    - You want to hide the internal structure completely
+
+    Most modern languages (PHP, Python, Java, etc.) provide built-in iterator support that should be used when possible.
+  </Accordion>
+</AccordionGroup>
+
+## Practical Application
+
+<AccordionGroup>
+  <Accordion title="How do I know which pattern to use?">
+    Follow these steps:
+
+    1. **Identify the problem clearly** - What are you trying to achieve?
+    2. **Consider simple solutions first** - Do you even need a pattern?
+    3. **Match the problem type**:
+       - Object creation problem? → Creational pattern
+       - Object composition problem? → Structural pattern
+       - Object interaction problem? → Behavioral pattern
+    4. **Review specific patterns** in that category
+    5. **Verify the fit** - Does the pattern truly solve your problem?
+    6. **Consider the trade-offs** - Is the added complexity worth it?
+
+    Remember: The best code is often the simplest code that works. Don't force a pattern.
+  </Accordion>
+
+  <Accordion title="Can I use multiple patterns together?">
+    **Yes!** Patterns often work well together. Some common combinations:
+
+    - **Abstract Factory** can be implemented using **Factory Method** or **Prototype**
+    - **Builder** can use **Composite** for building complex structures
+    - **Composite** and **Decorator** often work together
+    - **Facade** can use **Singleton** for the facade instance
+    - **Observer** can use **Mediator** to manage complex notifications
+    - **Strategy** and **Factory** together for selecting and creating strategies
+
+    Just be careful not to over-complicate things. Use multiple patterns only when they each solve a distinct problem.
+  </Accordion>
+
+  <Accordion title="How do I convince my team to use design patterns?">
+    **Don't start by convincing them to use patterns!**
+
+    Instead:
+    1. **Focus on solving problems** - Let patterns emerge naturally
+    2. **Demonstrate value** - Show how a pattern solves a specific pain point
+    3. **Use pattern names** - They provide a shared vocabulary
+    4. **Start small** - Introduce one pattern at a time
+    5. **Share knowledge** - Explain why, not just how
+    6. **Lead by example** - Use patterns appropriately in your code
+
+    Teams resist when patterns are forced. They embrace patterns that solve real problems they're experiencing.
+  </Accordion>
+
+  <Accordion title="Should I learn all 23 patterns?">
+    You should be **familiar** with all 23 patterns, but you don't need to memorize every detail.
+
+    **Priority levels**:
+
+    **Must know** (use these frequently):
+    - Factory Method
+    - Singleton (and why it's often an anti-pattern)
+    - Adapter
+    - Decorator
+    - Observer
+    - Strategy
+
+    **Should know** (use these regularly):
+    - Abstract Factory
+    - Builder
+    - Facade
+    - Proxy
+    - Command
+    - Template Method
+
+    **Good to know** (use these occasionally):
+    - All the others
+
+    Focus on understanding the **principles** behind patterns rather than memorizing implementations. When you understand the principles, you can recognize when a pattern applies.
+  </Accordion>
+
+  <Accordion title="Are these patterns language-specific?">
+    No, design patterns are **language-agnostic** concepts. The examples in Design Patterns for Humans use PHP, but the concepts apply to any object-oriented language.
+
+    However:
+    - Some patterns are **built into certain languages** (like Iterator in Python)
+    - Some patterns are **easier to implement** in certain languages
+    - Some patterns are **less necessary** depending on language features
+    - The implementation details vary by language
+
+    The key is understanding the concept. Once you understand why a pattern exists and what problem it solves, you can implement it in any OOP language.
+  </Accordion>
+
+  <Accordion title="What's the best way to learn design patterns?">
+    Follow this learning path:
+
+    1. **Understand the problem** each pattern solves
+    2. **Study real-world examples** - see the pattern in context
+    3. **Implement patterns yourself** - hands-on practice
+    4. **Recognize patterns in existing code** - see them in the wild
+    5. **Use patterns to solve real problems** - practical application
+    6. **Teach others** - explaining solidifies understanding
+
+    **Don't**:
+    - Just memorize implementations
+    - Force patterns into projects
+    - Learn all patterns at once
+    - Skip understanding the "why"
+
+    **Do**:
+    - Focus on principles and intent
+    - Let patterns emerge from real needs
+    - Learn gradually over time
+    - Study why patterns work
+
+    The goal is pattern recognition and appropriate application, not pattern memorization.
+  </Accordion>
+</AccordionGroup>

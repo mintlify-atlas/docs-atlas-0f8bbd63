@@ -1,0 +1,167 @@
+---
+title: 'Bridge Pattern'
+description: 'Prefer composition over inheritance by separating abstraction from implementation'
+---
+
+## Real World Example
+
+<Note>
+Consider you have a website with different pages and you are supposed to allow the user to change the theme. What would you do? Create multiple copies of each of the pages for each of the themes or would you just create separate theme and load them based on the user's preferences? Bridge pattern allows you to do the second.
+</Note>
+
+![With and without the bridge pattern](https://cloud.githubusercontent.com/assets/11269635/23065293/33b7aea0-f515-11e6-983f-98823c9845ee.png)
+
+## In Plain Words
+
+Bridge pattern is about preferring composition over inheritance. Implementation details are pushed from a hierarchy to another object with a separate hierarchy.
+
+## Wikipedia Definition
+
+> The bridge pattern is a design pattern used in software engineering that is meant to "decouple an abstraction from its implementation so that the two can vary independently"
+
+## Programmatic Example
+
+Translating our WebPage example from above. Here we have the `WebPage` hierarchy:
+
+```php
+interface WebPage
+{
+    public function __construct(Theme $theme);
+    public function getContent();
+}
+
+class About implements WebPage
+{
+    protected $theme;
+
+    public function __construct(Theme $theme)
+    {
+        $this->theme = $theme;
+    }
+
+    public function getContent()
+    {
+        return "About page in " . $this->theme->getColor();
+    }
+}
+
+class Careers implements WebPage
+{
+    protected $theme;
+
+    public function __construct(Theme $theme)
+    {
+        $this->theme = $theme;
+    }
+
+    public function getContent()
+    {
+        return "Careers page in " . $this->theme->getColor();
+    }
+}
+```
+
+And the separate theme hierarchy:
+
+```php
+interface Theme
+{
+    public function getColor();
+}
+
+class DarkTheme implements Theme
+{
+    public function getColor()
+    {
+        return 'Dark Black';
+    }
+}
+
+class LightTheme implements Theme
+{
+    public function getColor()
+    {
+        return 'Off white';
+    }
+}
+
+class AquaTheme implements Theme
+{
+    public function getColor()
+    {
+        return 'Light blue';
+    }
+}
+```
+
+And both the hierarchies:
+
+```php
+$darkTheme = new DarkTheme();
+
+$about = new About($darkTheme);
+$careers = new Careers($darkTheme);
+
+echo $about->getContent(); // "About page in Dark Black";
+echo $careers->getContent(); // "Careers page in Dark Black";
+```
+
+## Key Participants
+
+<AccordionGroup>
+  <Accordion title="Abstraction">
+    Defines the abstract interface and maintains a reference to the Implementor (in our example: `WebPage` interface)
+  </Accordion>
+  
+  <Accordion title="Refined Abstraction">
+    Extends the interface defined by Abstraction (in our example: `About`, `Careers`)
+  </Accordion>
+  
+  <Accordion title="Implementor">
+    Defines the interface for implementation classes (in our example: `Theme` interface)
+  </Accordion>
+  
+  <Accordion title="Concrete Implementor">
+    Implements the Implementor interface (in our example: `DarkTheme`, `LightTheme`, `AquaTheme`)
+  </Accordion>
+</AccordionGroup>
+
+## When to Use?
+
+<Info>
+Use the Bridge pattern when:
+- You want to avoid a permanent binding between an abstraction and its implementation
+- Both the abstractions and their implementations should be extensible by subclassing
+- Changes in the implementation of an abstraction should have no impact on clients
+- You want to hide the implementation of an abstraction completely from clients
+- You have a proliferation of classes resulting from a coupled interface and numerous implementations
+</Info>
+
+## Benefits
+
+- **Decoupling**: Separates abstraction from implementation so they can vary independently
+- **Improved Extensibility**: You can extend abstraction and implementation hierarchies independently
+- **Hiding Implementation Details**: You can shield clients from implementation details
+- **Single Responsibility**: Abstraction focuses on high-level logic, implementation on platform details
+
+## Comparison: Inheritance vs Bridge
+
+<Warning>
+Without Bridge pattern, you might create:
+- `DarkAboutPage`, `LightAboutPage`, `AquaAboutPage`
+- `DarkCareersPage`, `LightCareersPage`, `AquaCareersPage`
+
+This leads to a combinatorial explosion of classes!
+</Warning>
+
+<Info>
+With Bridge pattern, you have:
+- 2 page types (About, Careers)
+- 3 themes (Dark, Light, Aqua)
+- Total: 5 classes instead of 6, and it scales much better!
+</Info>
+
+## Related Patterns
+
+- **Abstract Factory**: Can be used to create and configure a particular Bridge
+- **Adapter**: Makes unrelated classes work together, while Bridge is designed up-front to let abstraction and implementation vary independently

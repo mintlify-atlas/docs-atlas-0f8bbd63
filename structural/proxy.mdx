@@ -1,0 +1,313 @@
+---
+title: 'Proxy Pattern'
+description: 'Control access to another object by providing a surrogate or placeholder'
+---
+
+## Real World Example
+
+<Note>
+Have you ever used an access card to go through a door? There are multiple options to open that door i.e. it can be opened either using access card or by pressing a button that bypasses the security. The door's main functionality is to open but there is a proxy added on top of it to add some functionality. Let me better explain it using the code example below.
+</Note>
+
+## In Plain Words
+
+Using the proxy pattern, a class represents the functionality of another class.
+
+## Wikipedia Definition
+
+> A proxy, in its most general form, is a class functioning as an interface to something else. A proxy is a wrapper or agent object that is being called by the client to access the real serving object behind the scenes. Use of the proxy can simply be forwarding to the real object, or can provide additional logic. In the proxy extra functionality can be provided, for example caching when operations on the real object are resource intensive, or checking preconditions before operations on the real object are invoked.
+
+## Programmatic Example
+
+Taking our security door example from above. Firstly we have the door interface and an implementation of door:
+
+```php
+interface Door
+{
+    public function open();
+    public function close();
+}
+
+class LabDoor implements Door
+{
+    public function open()
+    {
+        echo "Opening lab door";
+    }
+
+    public function close()
+    {
+        echo "Closing the lab door";
+    }
+}
+```
+
+Then we have a proxy to secure any doors that we want:
+
+```php
+class SecuredDoor implements Door
+{
+    protected $door;
+
+    public function __construct(Door $door)
+    {
+        $this->door = $door;
+    }
+
+    public function open($password)
+    {
+        if ($this->authenticate($password)) {
+            $this->door->open();
+        } else {
+            echo "Big no! It ain't possible.";
+        }
+    }
+
+    public function authenticate($password)
+    {
+        return $password === '$ecr@t';
+    }
+
+    public function close()
+    {
+        $this->door->close();
+    }
+}
+```
+
+And here is how it can be used:
+
+```php
+$door = new SecuredDoor(new LabDoor());
+$door->open('invalid'); // Big no! It ain't possible.
+
+$door->open('$ecr@t'); // Opening lab door
+$door->close(); // Closing lab door
+```
+
+## Additional Example: Data Mapper
+
+Yet another example would be some sort of data-mapper implementation. For example, I recently made an ODM (Object Data Mapper) for MongoDB using this pattern where I wrote a proxy around mongo classes while utilizing the magic method `__call()`. All the method calls were proxied to the original mongo class and result retrieved was returned as it is but in case of `find` or `findOne` data was mapped to the required class objects and the object was returned instead of `Cursor`.
+
+## Key Participants
+
+<AccordionGroup>
+  <Accordion title="Subject">
+    Defines the common interface for RealSubject and Proxy (in our example: `Door` interface)
+  </Accordion>
+  
+  <Accordion title="Real Subject">
+    The real object that the proxy represents (in our example: `LabDoor`)
+  </Accordion>
+  
+  <Accordion title="Proxy">
+    Maintains a reference to the Real Subject and controls access to it (in our example: `SecuredDoor`)
+  </Accordion>
+  
+  <Accordion title="Client">
+    Works with objects through the Subject interface
+  </Accordion>
+</AccordionGroup>
+
+## Types of Proxies
+
+<Tabs>
+  <Tab title="Protection Proxy">
+    Controls access to the original object. Useful when you need different access rights.
+    
+    ```php
+    // Our SecuredDoor is a protection proxy
+    $door = new SecuredDoor(new LabDoor());
+    $door->open('password'); // Checks authentication first
+    ```
+  </Tab>
+  
+  <Tab title="Virtual Proxy">
+    Delays creation and initialization of expensive objects until needed.
+    
+    ```php
+    class ImageProxy implements Image
+    {
+        private $filename;
+        private $image;
+        
+        public function display()
+        {
+            if ($this->image === null) {
+                $this->image = new RealImage($this->filename);
+            }
+            $this->image->display();
+        }
+    }
+    ```
+  </Tab>
+  
+  <Tab title="Remote Proxy">
+    Provides a local representative for an object in a different address space.
+    
+    ```php
+    class RemoteServiceProxy
+    {
+        public function request()
+        {
+            // Handle network communication
+            // Forward to remote object
+        }
+    }
+    ```
+  </Tab>
+  
+  <Tab title="Caching Proxy">
+    Caches results of expensive operations.
+    
+    ```php
+    class CachingProxy
+    {
+        private $cache = [];
+        
+        public function getData($key)
+        {
+            if (!isset($this->cache[$key])) {
+                $this->cache[$key] = $this->service->getData($key);
+            }
+            return $this->cache[$key];
+        }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## When to Use?
+
+<Info>
+Use the Proxy pattern when:
+- You need lazy initialization (virtual proxy)
+- You need access control (protection proxy)
+- You need a local representative for a remote object (remote proxy)
+- You need to add additional logic before/after method calls
+- You want to cache expensive operations (caching proxy)
+- You need logging, monitoring, or instrumentation
+</Info>
+
+## Benefits
+
+- **Control**: Controls access to the real object
+- **Lazy Initialization**: Can delay expensive object creation
+- **Access Control**: Can enforce security and access rights
+- **Additional Logic**: Can add logging, caching, etc. without modifying the real object
+- **Open/Closed Principle**: Can introduce new proxies without changing the service or clients
+
+## Proxy vs Similar Patterns
+
+<Tabs>
+  <Tab title="Proxy vs Adapter">
+    **Proxy**: Provides the same interface as the real object
+    
+    **Adapter**: Provides a different interface
+  </Tab>
+  
+  <Tab title="Proxy vs Decorator">
+    **Proxy**: Controls access, lifecycle of the real object
+    
+    **Decorator**: Adds responsibilities to an object
+  </Tab>
+  
+  <Tab title="Proxy vs Facade">
+    **Proxy**: Same interface as real object, typically works with a single object
+    
+    **Facade**: Simplified interface to a subsystem of objects
+  </Tab>
+</Tabs>
+
+## Real-World Applications
+
+<CardGroup cols={2}>
+  <Card title="ORM Frameworks" icon="database">
+    Lazy loading of database relations
+  </Card>
+  
+  <Card title="API Clients" icon="cloud">
+    Remote proxies for web services
+  </Card>
+  
+  <Card title="Image Loading" icon="image">
+    Virtual proxies for large images
+  </Card>
+  
+  <Card title="Access Control" icon="lock">
+    Protection proxies for secure resources
+  </Card>
+</CardGroup>
+
+## Implementation Example: Lazy Loading
+
+```php
+interface VideoInterface
+{
+    public function play();
+}
+
+class RealVideo implements VideoInterface
+{
+    private $filename;
+    
+    public function __construct($filename)
+    {
+        $this->filename = $filename;
+        $this->loadVideo();
+    }
+    
+    private function loadVideo()
+    {
+        echo "Loading video: {$this->filename}\n";
+        // Expensive operation: load video from disk
+    }
+    
+    public function play()
+    {
+        echo "Playing video: {$this->filename}\n";
+    }
+}
+
+class VideoProxy implements VideoInterface
+{
+    private $filename;
+    private $realVideo;
+    
+    public function __construct($filename)
+    {
+        $this->filename = $filename;
+    }
+    
+    public function play()
+    {
+        // Lazy loading: create real object only when needed
+        if ($this->realVideo === null) {
+            $this->realVideo = new RealVideo($this->filename);
+        }
+        $this->realVideo->play();
+    }
+}
+
+// Usage
+$video = new VideoProxy('awesome_video.mp4');
+// Video not loaded yet!
+
+$video->play();
+// Loading video: awesome_video.mp4
+// Playing video: awesome_video.mp4
+```
+
+## Considerations
+
+<Warning>
+- Response time might be delayed due to proxy overhead
+- Adds another layer of abstraction which can make code harder to understand
+- Need to ensure proxy and real object stay in sync if interfaces change
+</Warning>
+
+## Related Patterns
+
+- **Adapter**: Proxy provides the same interface; Adapter provides a different interface
+- **Decorator**: Decorator adds responsibilities; Proxy controls access
+- **Facade**: Facade provides simplified interface to subsystem; Proxy provides same interface as real object

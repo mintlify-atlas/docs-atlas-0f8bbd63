@@ -1,0 +1,95 @@
+---
+title: 'Prototype'
+description: 'Create objects based on existing objects through cloning'
+icon: 'sheep'
+---
+
+## Real-World Example
+
+Remember dolly? The sheep that was cloned! Lets not get into the details but the key point here is that it is all about cloning.
+
+## In Plain Words
+
+Create object based on an existing object through cloning.
+
+## Wikipedia Says
+
+<Note>
+The prototype pattern is a creational design pattern in software development. It is used when the type of objects to create is determined by a prototypical instance, which is cloned to produce new objects.
+</Note>
+
+In short, it allows you to create a copy of an existing object and modify it to your needs, instead of going through the trouble of creating an object from scratch and setting it up.
+
+## Programmatic Example
+
+In PHP, it can be easily done using `clone`:
+
+```php
+class Sheep
+{
+    protected $name;
+    protected $category;
+
+    public function __construct(string $name, string $category = 'Mountain Sheep')
+    {
+        $this->name = $name;
+        $this->category = $category;
+    }
+
+    public function setName(string $name)
+    {
+        $this->name = $name;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setCategory(string $category)
+    {
+        $this->category = $category;
+    }
+
+    public function getCategory()
+    {
+        return $this->category;
+    }
+}
+```
+
+Then it can be cloned like below:
+
+```php
+$original = new Sheep('Jolly');
+echo $original->getName(); // Jolly
+echo $original->getCategory(); // Mountain Sheep
+
+// Clone and modify what is required
+$cloned = clone $original;
+$cloned->setName('Dolly');
+echo $cloned->getName(); // Dolly
+echo $cloned->getCategory(); // Mountain sheep
+```
+
+<Tip>
+You can also use the magic method `__clone` to modify the cloning behavior and customize what happens during the cloning process.
+</Tip>
+
+## When to Use?
+
+<AccordionGroup>
+  <Accordion title="When objects are similar to existing objects">
+    When an object is required that is similar to existing object or when the creation would be expensive as compared to cloning.
+  </Accordion>
+  <Accordion title="When initialization is expensive">
+    If creating a new instance from scratch involves expensive operations (database queries, complex calculations, file I/O), cloning an existing instance can be much more efficient.
+  </Accordion>
+  <Accordion title="When you need independent copies">
+    When you need multiple instances with the same initial state but want them to be independent - changes to one clone don't affect others.
+  </Accordion>
+</AccordionGroup>
+
+<Warning>
+Be careful with shallow vs deep cloning. PHP's default `clone` creates a shallow copy - if your object contains references to other objects, those references will be shared between the original and the clone. Implement `__clone` for deep copying if needed.
+</Warning>

@@ -1,0 +1,209 @@
+---
+title: 'Composite Pattern'
+description: 'Treat individual objects and compositions uniformly in a tree structure'
+---
+
+## Real World Example
+
+<Note>
+Every organization is composed of employees. Each of the employees has the same features i.e. has a salary, has some responsibilities, may or may not report to someone, may or may not have some subordinates etc.
+</Note>
+
+The key insight is that both individual employees and groups of employees (like departments) can be treated uniformly - they all have salaries, responsibilities, and organizational relationships.
+
+## In Plain Words
+
+Composite pattern lets clients treat the individual objects in a uniform manner.
+
+## Wikipedia Definition
+
+> In software engineering, the composite pattern is a partitioning design pattern. The composite pattern describes that a group of objects is to be treated in the same way as a single instance of an object. The intent of a composite is to "compose" objects into tree structures to represent part-whole hierarchies. Implementing the composite pattern lets clients treat individual objects and compositions uniformly.
+
+## Programmatic Example
+
+Taking our employees example from above. Here we have different employee types:
+
+```php
+interface Employee
+{
+    public function __construct(string $name, float $salary);
+    public function getName(): string;
+    public function setSalary(float $salary);
+    public function getSalary(): float;
+    public function getRoles(): array;
+}
+
+class Developer implements Employee
+{
+    protected $salary;
+    protected $name;
+    protected $roles;
+    
+    public function __construct(string $name, float $salary)
+    {
+        $this->name = $name;
+        $this->salary = $salary;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setSalary(float $salary)
+    {
+        $this->salary = $salary;
+    }
+
+    public function getSalary(): float
+    {
+        return $this->salary;
+    }
+
+    public function getRoles(): array
+    {
+        return $this->roles;
+    }
+}
+
+class Designer implements Employee
+{
+    protected $salary;
+    protected $name;
+    protected $roles;
+
+    public function __construct(string $name, float $salary)
+    {
+        $this->name = $name;
+        $this->salary = $salary;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setSalary(float $salary)
+    {
+        $this->salary = $salary;
+    }
+
+    public function getSalary(): float
+    {
+        return $this->salary;
+    }
+
+    public function getRoles(): array
+    {
+        return $this->roles;
+    }
+}
+```
+
+Then we have an organization which consists of several different types of employees:
+
+```php
+class Organization
+{
+    protected $employees;
+
+    public function addEmployee(Employee $employee)
+    {
+        $this->employees[] = $employee;
+    }
+
+    public function getNetSalaries(): float
+    {
+        $netSalary = 0;
+
+        foreach ($this->employees as $employee) {
+            $netSalary += $employee->getSalary();
+        }
+
+        return $netSalary;
+    }
+}
+```
+
+And then it can be used as:
+
+```php
+// Prepare the employees
+$john = new Developer('John Doe', 12000);
+$jane = new Designer('Jane Doe', 15000);
+
+// Add them to organization
+$organization = new Organization();
+$organization->addEmployee($john);
+$organization->addEmployee($jane);
+
+echo "Net salaries: " . $organization->getNetSalaries(); // Net Salaries: 27000
+```
+
+## Key Participants
+
+<AccordionGroup>
+  <Accordion title="Component">
+    Declares the interface for objects in the composition (in our example: `Employee` interface)
+  </Accordion>
+  
+  <Accordion title="Leaf">
+    Represents leaf objects in the composition that have no children (in our example: `Developer`, `Designer`)
+  </Accordion>
+  
+  <Accordion title="Composite">
+    Defines behavior for components having children and stores child components (in our example: `Organization`)
+  </Accordion>
+  
+  <Accordion title="Client">
+    Manipulates objects in the composition through the Component interface
+  </Accordion>
+</AccordionGroup>
+
+## Structure Visualization
+
+```
+Organization (Composite)
+├── Developer (Leaf)
+├── Designer (Leaf)
+└── Organization (Composite)
+    ├── Developer (Leaf)
+    └── Designer (Leaf)
+```
+
+## When to Use?
+
+<Info>
+Use the Composite pattern when:
+- You want to represent part-whole hierarchies of objects
+- You want clients to ignore the difference between compositions of objects and individual objects
+- The structure can have any level of complexity and is dynamic
+- You need to treat individual objects and compositions uniformly
+</Info>
+
+## Benefits
+
+- **Simplicity**: Clients can treat composite structures and individual objects uniformly
+- **Easier to Add New Components**: New component types can be added without changing existing code
+- **Flexibility**: Makes it easier to add new kinds of components
+
+## Considerations
+
+<Warning>
+- Can make the design overly general
+- Can make it harder to restrict the components of a composite
+- Type safety might be compromised as both leaf and composite nodes implement the same interface
+</Warning>
+
+## Real-World Applications
+
+- File systems (files and folders)
+- GUI components (containers and widgets)
+- Organization hierarchies (employees and departments)
+- Graphics rendering (shapes and groups of shapes)
+
+## Related Patterns
+
+- **Decorator**: Often used together with Composite. When decorators and composites are used together, they will usually have a common parent class
+- **Iterator**: Can be used to traverse composite structures
+- **Visitor**: Can be used to apply an operation over a composite structure

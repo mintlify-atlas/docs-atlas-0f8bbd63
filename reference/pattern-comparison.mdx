@@ -1,0 +1,93 @@
+---
+title: Pattern Comparison
+description: Comprehensive comparison of all 23 design patterns organized by category
+---
+
+# Pattern Comparison
+
+This page provides a comprehensive overview of all 23 design patterns organized by category. Use this as a quick reference to find the right pattern for your needs.
+
+## Creational Design Patterns
+
+Creational patterns are focused towards how to instantiate an object or group of related objects. They deal with object creation mechanisms, trying to create objects in a manner suitable to the situation.
+
+| Pattern | Purpose | When to Use |
+|---------|---------|-------------|
+| **Simple Factory** | Generates an instance for client without exposing any instantiation logic | When creating an object involves some logic beyond simple assignments and you want to avoid repeating the same code everywhere |
+| **Factory Method** | Delegates the instantiation logic to child classes | When there is generic processing in a class but the required sub-class is dynamically decided at runtime |
+| **Abstract Factory** | A factory of factories; groups individual but related/dependent factories together | When there are interrelated dependencies with not-that-simple creation logic involved |
+| **Builder** | Allows creating different flavors of an object while avoiding constructor pollution | When there could be several flavors of an object and you need to avoid telescoping constructors. Key difference from factory: factory is one-step, builder is multi-step |
+| **Prototype** | Create object based on an existing object through cloning | When an object is required that is similar to an existing object or when creation would be expensive compared to cloning |
+| **Singleton** | Ensures that only one object of a particular class is ever created | When exactly one object is needed to coordinate actions across the system (Note: considered an anti-pattern, use with caution) |
+
+## Structural Design Patterns
+
+Structural patterns are mostly concerned with object composition - how entities can use each other. They help answer "How to build a software component?"
+
+| Pattern | Purpose | When to Use |
+|---------|---------|-------------|
+| **Adapter** | Wrap an otherwise incompatible object in an adapter to make it compatible with another class | To make existing classes work with others without modifying their source code |
+| **Bridge** | Prefer composition over inheritance; push implementation details from a hierarchy to another object with a separate hierarchy | When you want to decouple an abstraction from its implementation so that the two can vary independently |
+| **Composite** | Lets clients treat individual objects in a uniform manner | When you need to compose objects into tree structures to represent part-whole hierarchies |
+| **Decorator** | Dynamically change the behavior of an object at run time by wrapping them in decorator classes | When you need to add behavior to individual objects dynamically without affecting other objects from the same class |
+| **Facade** | Provides a simplified interface to a complex subsystem | When you need to provide a simple interface to a complex system |
+| **Flyweight** | Minimize memory usage or computational expenses by sharing as much as possible with similar objects | When you need to use objects in large numbers and a simple repeated representation would use unacceptable memory |
+| **Proxy** | A class represents the functionality of another class | When you need to add additional functionality (like caching, access control, etc.) before/after accessing the real object |
+
+## Behavioral Design Patterns
+
+Behavioral patterns are concerned with assignment of responsibilities between objects. They don't just specify structure but also outline patterns for message passing/communication. They help answer "How to run a behavior in software component?"
+
+| Pattern | Purpose | When to Use |
+|---------|---------|-------------|
+| **Chain of Responsibility** | Build a chain of objects; request enters from one end and keeps going from object to object till it finds the suitable handler | When you have multiple handlers for a request and you want to chain them in a specific order |
+| **Command** | Encapsulate actions in objects; provides means to decouple client from receiver | When you need to provide undo functionality or queue operations |
+| **Iterator** | Provides a way to access elements of an object without exposing the underlying presentation | When you need to traverse a container and access its elements |
+| **Mediator** | Adds a third party object (mediator) to control interaction between two objects (colleagues) | When you need to reduce coupling between classes communicating with each other |
+| **Memento** | Capture and store the current state of an object for later restoration | When you need to provide undo functionality |
+| **Observer** | Defines a dependency between objects so that whenever an object changes state, all dependents are notified | When multiple objects need to be notified about state changes in another object |
+| **Visitor** | Add further operations to objects without having to modify them | When you need to add new operations to existing object structures without modifying those structures |
+| **Strategy** | Switch the algorithm or strategy based upon the situation | When you want to select algorithm behavior at runtime |
+| **State** | Change the behavior of a class when the state changes | When you have an object that behaves differently based on its current state |
+| **Template Method** | Defines the skeleton of how an algorithm could be performed, deferring implementation to children classes | When you want to define the program skeleton of an algorithm but defer some steps to subclasses |
+
+## Quick Pattern Selector
+
+### Need to Create Objects?
+- **Simple logic**: Simple Factory
+- **Delegate to subclasses**: Factory Method
+- **Related object families**: Abstract Factory
+- **Complex construction**: Builder
+- **Copy existing object**: Prototype
+- **Single instance only**: Singleton
+
+### Need to Compose Objects?
+- **Make incompatible interfaces work**: Adapter
+- **Separate abstraction from implementation**: Bridge
+- **Tree structures**: Composite
+- **Add behavior dynamically**: Decorator
+- **Simplify complex system**: Facade
+- **Share data efficiently**: Flyweight
+- **Control access**: Proxy
+
+### Need to Coordinate Behavior?
+- **Chain of handlers**: Chain of Responsibility
+- **Encapsulate requests**: Command
+- **Traverse collections**: Iterator
+- **Reduce coupling between objects**: Mediator
+- **Capture/restore state**: Memento
+- **Notify multiple objects**: Observer
+- **Add operations without modification**: Visitor
+- **Switch algorithms**: Strategy
+- **State-dependent behavior**: State
+- **Define algorithm skeleton**: Template Method
+
+## Pattern Relationships
+
+<Note>
+Many patterns work well together:
+- **Abstract Factory** can be implemented using **Factory Method** or **Prototype**
+- **Builder** focuses on constructing complex objects step by step, while **Abstract Factory** emphasizes families of product objects
+- **Composite** and **Decorator** have similar structures but different intents
+- **State** can be interpreted as a **Strategy** that is able to switch the current strategy through method invocations
+</Note>

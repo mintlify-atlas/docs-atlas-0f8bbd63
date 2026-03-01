@@ -1,0 +1,80 @@
+---
+title: 'Structural Patterns Overview'
+description: 'Learn about structural design patterns and how they help in building flexible software components'
+---
+
+## What are Structural Patterns?
+
+<Info>
+Structural patterns are mostly concerned with object composition or in other words how the entities can use each other. They help in answering "How to build a software component?"
+</Info>
+
+In plain words, structural patterns explain how to assemble objects and classes into larger structures while keeping these structures flexible and efficient.
+
+### Wikipedia Definition
+
+> In software engineering, structural design patterns are design patterns that ease the design by identifying a simple way to realize relationships between entities.
+
+## The Seven Structural Patterns
+
+This section covers all seven structural design patterns:
+
+<CardGroup cols={2}>
+  <Card title="Adapter" icon="plug" href="/structural/adapter">
+    Wrap an incompatible object to make it compatible with another class
+  </Card>
+  
+  <Card title="Bridge" icon="bridge" href="/structural/bridge">
+    Prefer composition over inheritance by separating abstraction from implementation
+  </Card>
+  
+  <Card title="Composite" icon="sitemap" href="/structural/composite">
+    Treat individual objects and compositions uniformly
+  </Card>
+  
+  <Card title="Decorator" icon="wand-magic-sparkles" href="/structural/decorator">
+    Dynamically add behavior to objects at runtime
+  </Card>
+  
+  <Card title="Facade" icon="window" href="/structural/facade">
+    Provide a simplified interface to a complex subsystem
+  </Card>
+  
+  <Card title="Flyweight" icon="feather" href="/structural/flyweight">
+    Minimize memory usage by sharing data with similar objects
+  </Card>
+  
+  <Card title="Proxy" icon="shield" href="/structural/proxy">
+    Represent the functionality of another class with additional logic
+  </Card>
+</CardGroup>
+
+## Key Concepts
+
+### Object Composition
+
+Structural patterns focus on how classes and objects are composed to form larger structures. They use inheritance to compose interfaces and define ways to compose objects to obtain new functionality.
+
+### Flexibility and Efficiency
+
+These patterns help ensure that if one part of a system changes, the entire structure doesn't need to change. They make it easier to modify the structure independently of the components themselves.
+
+## When to Use Structural Patterns
+
+<Note>
+Use structural patterns when you need to:
+- Simplify complex relationships between objects
+- Add functionality to objects without modifying their structure
+- Create flexible and reusable object compositions
+- Provide alternative interfaces to existing classes
+</Note>
+
+## Next Steps
+
+Explore each pattern in detail to understand:
+- Real-world examples
+- Implementation details
+- When to use each pattern
+- PHP code examples
+
+Start with the [Adapter Pattern](/structural/adapter) to learn how to make incompatible interfaces work together.

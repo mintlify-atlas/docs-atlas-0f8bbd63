@@ -1,0 +1,90 @@
+---
+title: What Are Design Patterns?
+description: Understanding the fundamentals of design patterns and their role in software engineering
+---
+
+## Definition
+
+Design patterns are solutions to recurring problems; **guidelines on how to tackle certain problems**. They are not classes, packages or libraries that you can plug into your application and wait for the magic to happen. These are, rather, guidelines on how to tackle certain problems in certain situations.
+
+<Note>
+Design patterns are solutions to recurring problems; guidelines on how to tackle certain problems
+</Note>
+
+## Formal Definition
+
+Wikipedia describes them as:
+
+> In software engineering, a software design pattern is a general reusable solution to a commonly occurring problem within a given context in software design. It is not a finished design that can be transformed directly into source or machine code. It is a description or template for how to solve a problem that can be used in many different situations.
+
+## Important Considerations
+
+<Warning>
+**Be Careful**
+
+Design patterns are powerful tools, but they must be used wisely:
+
+- **Not a silver bullet** - Design patterns are not a magical solution to all your problems
+- **Don't force them** - Trying to force design patterns where they don't belong will lead to bad outcomes
+- **Solutions TO problems** - Remember that design patterns are solutions **to** problems, not solutions **finding** problems; so don't overthink
+- **Context matters** - If used in the correct place in the correct manner, they can prove to be a savior; otherwise they can result in a horrible mess of code
+</Warning>
+
+## Types of Design Patterns
+
+Design patterns are categorized into three main types, each serving a different purpose in software design:
+
+<CardGroup cols={1}>
+  <Card title="Creational Design Patterns" icon="hammer" href="/creational/overview">
+    **In plain words:** Creational patterns are focused towards how to instantiate an object or group of related objects.
+    
+    **Wikipedia says:** In software engineering, creational design patterns are design patterns that deal with object creation mechanisms, trying to create objects in a manner suitable to the situation. The basic form of object creation could result in design problems or added complexity to the design. Creational design patterns solve this problem by somehow controlling this object creation.
+    
+    **Patterns included:** Simple Factory, Factory Method, Abstract Factory, Builder, Prototype, Singleton
+  </Card>
+  
+  <Card title="Structural Design Patterns" icon="building" href="/structural/overview">
+    **In plain words:** Structural patterns are mostly concerned with object composition or in other words how the entities can use each other. Or yet another explanation would be, they help in answering "How to build a software component?"
+    
+    **Wikipedia says:** In software engineering, structural design patterns are design patterns that ease the design by identifying a simple way to realize relationships between entities.
+    
+    **Patterns included:** Adapter, Bridge, Composite, Decorator, Facade, Flyweight, Proxy
+  </Card>
+  
+  <Card title="Behavioral Design Patterns" icon="arrows-turn-to-dots" href="/behavioral/overview">
+    **In plain words:** It is concerned with assignment of responsibilities between the objects. What makes them different from structural patterns is they don't just specify the structure but also outline the patterns for message passing/communication between them. Or in other words, they assist in answering "How to run a behavior in software component?"
+    
+    **Wikipedia says:** In software engineering, behavioral design patterns are design patterns that identify common communication patterns between objects and realize these patterns. By doing so, these patterns increase flexibility in carrying out this communication.
+    
+    **Patterns included:** Chain of Responsibility, Command, Iterator, Mediator, Memento, Observer, Visitor, Strategy, State, Template Method
+  </Card>
+</CardGroup>
+
+## About the Code Samples
+
+<Note>
+The code samples throughout this guide are in PHP-7, however this shouldn't stop you because the concepts are the same regardless of programming language.
+</Note>
+
+Each pattern includes:
+- **Real world example** - A relatable analogy to help you understand the concept
+- **In plain words** - A simple, jargon-free explanation
+- **Wikipedia definition** - The formal computer science definition
+- **Programmatic example** - Working code demonstrating the pattern
+- **When to use** - Practical guidance on when to apply the pattern
+
+## Next Steps
+
+Now that you understand what design patterns are, you can explore each category:
+
+<CardGroup cols={3}>
+  <Card title="Creational" icon="hammer" href="/creational/overview">
+    Learn about object creation patterns
+  </Card>
+  <Card title="Structural" icon="building" href="/structural/overview">
+    Understand object composition patterns
+  </Card>
+  <Card title="Behavioral" icon="arrows-turn-to-dots" href="/behavioral/overview">
+    Master communication patterns
+  </Card>
+</CardGroup>

@@ -1,0 +1,206 @@
+---
+title: 'Decorator Pattern'
+description: 'Dynamically add behavior to objects at runtime by wrapping them in decorator classes'
+---
+
+## Real World Example
+
+<Note>
+Imagine you run a car service shop offering multiple services. Now how do you calculate the bill to be charged? You pick one service and dynamically keep adding to it the prices for the provided services till you get the final cost. Here each type of service is a decorator.
+</Note>
+
+## In Plain Words
+
+Decorator pattern lets you dynamically change the behavior of an object at run time by wrapping them in an object of a decorator class.
+
+## Wikipedia Definition
+
+> In object-oriented programming, the decorator pattern is a design pattern that allows behavior to be added to an individual object, either statically or dynamically, without affecting the behavior of other objects from the same class. The decorator pattern is often useful for adhering to the Single Responsibility Principle, as it allows functionality to be divided between classes with unique areas of concern.
+
+## Programmatic Example
+
+Let's take coffee for example. First of all we have a simple coffee implementing the coffee interface:
+
+```php
+interface Coffee
+{
+    public function getCost();
+    public function getDescription();
+}
+
+class SimpleCoffee implements Coffee
+{
+    public function getCost()
+    {
+        return 10;
+    }
+
+    public function getDescription()
+    {
+        return 'Simple coffee';
+    }
+}
+```
+
+We want to make the code extensible to allow options to modify it if required. Let's make some add-ons (decorators):
+
+```php
+class MilkCoffee implements Coffee
+{
+    protected $coffee;
+
+    public function __construct(Coffee $coffee)
+    {
+        $this->coffee = $coffee;
+    }
+
+    public function getCost()
+    {
+        return $this->coffee->getCost() + 2;
+    }
+
+    public function getDescription()
+    {
+        return $this->coffee->getDescription() . ', milk';
+    }
+}
+
+class WhipCoffee implements Coffee
+{
+    protected $coffee;
+
+    public function __construct(Coffee $coffee)
+    {
+        $this->coffee = $coffee;
+    }
+
+    public function getCost()
+    {
+        return $this->coffee->getCost() + 5;
+    }
+
+    public function getDescription()
+    {
+        return $this->coffee->getDescription() . ', whip';
+    }
+}
+
+class VanillaCoffee implements Coffee
+{
+    protected $coffee;
+
+    public function __construct(Coffee $coffee)
+    {
+        $this->coffee = $coffee;
+    }
+
+    public function getCost()
+    {
+        return $this->coffee->getCost() + 3;
+    }
+
+    public function getDescription()
+    {
+        return $this->coffee->getDescription() . ', vanilla';
+    }
+}
+```
+
+Let's make a coffee now:
+
+```php
+$someCoffee = new SimpleCoffee();
+echo $someCoffee->getCost(); // 10
+echo $someCoffee->getDescription(); // Simple Coffee
+
+$someCoffee = new MilkCoffee($someCoffee);
+echo $someCoffee->getCost(); // 12
+echo $someCoffee->getDescription(); // Simple Coffee, milk
+
+$someCoffee = new WhipCoffee($someCoffee);
+echo $someCoffee->getCost(); // 17
+echo $someCoffee->getDescription(); // Simple Coffee, milk, whip
+
+$someCoffee = new VanillaCoffee($someCoffee);
+echo $someCoffee->getCost(); // 20
+echo $someCoffee->getDescription(); // Simple Coffee, milk, whip, vanilla
+```
+
+## Key Participants
+
+<AccordionGroup>
+  <Accordion title="Component">
+    Defines the interface for objects that can have responsibilities added to them (in our example: `Coffee` interface)
+  </Accordion>
+  
+  <Accordion title="Concrete Component">
+    Defines an object to which additional responsibilities can be attached (in our example: `SimpleCoffee`)
+  </Accordion>
+  
+  <Accordion title="Decorator">
+    Maintains a reference to a Component object and defines an interface that conforms to Component's interface
+  </Accordion>
+  
+  <Accordion title="Concrete Decorator">
+    Adds responsibilities to the component (in our example: `MilkCoffee`, `WhipCoffee`, `VanillaCoffee`)
+  </Accordion>
+</AccordionGroup>
+
+## Decoration Flow
+
+```
+SimpleCoffee (10)
+    ↓
+MilkCoffee wraps SimpleCoffee (10 + 2 = 12)
+    ↓
+WhipCoffee wraps MilkCoffee (12 + 5 = 17)
+    ↓
+VanillaCoffee wraps WhipCoffee (17 + 3 = 20)
+```
+
+## When to Use?
+
+<Info>
+Use the Decorator pattern when:
+- You need to add responsibilities to individual objects dynamically and transparently
+- You need to add responsibilities that can be withdrawn
+- Extension by subclassing is impractical or impossible
+- You want to avoid an explosion of subclasses to support every combination
+</Info>
+
+## Benefits
+
+- **More Flexibility**: More flexible than static inheritance
+- **Avoids Feature-Laden Classes**: Allows you to add functionality incrementally
+- **Single Responsibility**: Divide functionality between classes with unique areas of concern
+- **Runtime Composition**: Can add/remove responsibilities at runtime
+
+## Considerations
+
+<Warning>
+- A decorator and its component aren't identical (type checking issues)
+- Can result in many small objects that differ only in how they're interconnected
+- Can be complicated to understand and debug with many layers of decoration
+</Warning>
+
+## Decorator vs Inheritance
+
+| Aspect | Inheritance | Decorator |
+|--------|-------------|----------|
+| Timing | Compile-time | Runtime |
+| Flexibility | Static | Dynamic |
+| Combinations | All combinations need separate classes | Mix and match decorators |
+| Modification | Modifies class | Wraps object |
+
+## Real-World Applications
+
+- I/O Streams in Java (BufferedReader, InputStreamReader)
+- GUI components (adding borders, scrollbars)
+- Middleware in web frameworks
+- Logging, caching, validation wrappers
+
+## Related Patterns
+
+- **Adapter**: Changes an interface; Decorator enhances responsibilities
+- **Composite**: Decorator can be viewed as a degenerate composite with only one component
+- **Strategy**: Decorator lets you change the skin of an object; Strategy lets you change the guts

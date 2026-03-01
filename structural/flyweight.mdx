@@ -1,0 +1,264 @@
+---
+title: 'Flyweight Pattern'
+description: 'Minimize memory usage by sharing as much data as possible with similar objects'
+---
+
+## Real World Example
+
+<Note>
+Did you ever have fresh tea from some stall? They often make more than one cup that you demanded and save the rest for any other customer so to save the resources e.g. gas etc. Flyweight pattern is all about that i.e. sharing.
+</Note>
+
+## In Plain Words
+
+It is used to minimize memory usage or computational expenses by sharing as much as possible with similar objects.
+
+## Wikipedia Definition
+
+> In computer programming, flyweight is a software design pattern. A flyweight is an object that minimizes memory use by sharing as much data as possible with other similar objects; it is a way to use objects in large numbers when a simple repeated representation would use an unacceptable amount of memory.
+
+## Programmatic Example
+
+Translating our tea example from above. First of all we have tea types and tea maker:
+
+```php
+// Anything that will be cached is flyweight.
+// Types of tea here will be flyweights.
+class KarakTea
+{
+}
+
+// Acts as a factory and saves the tea
+class TeaMaker
+{
+    protected $availableTea = [];
+
+    public function make($preference)
+    {
+        if (empty($this->availableTea[$preference])) {
+            $this->availableTea[$preference] = new KarakTea();
+        }
+
+        return $this->availableTea[$preference];
+    }
+}
+```
+
+Then we have the `TeaShop` which takes orders and serves them:
+
+```php
+class TeaShop
+{
+    protected $orders;
+    protected $teaMaker;
+
+    public function __construct(TeaMaker $teaMaker)
+    {
+        $this->teaMaker = $teaMaker;
+    }
+
+    public function takeOrder(string $teaType, int $table)
+    {
+        $this->orders[$table] = $this->teaMaker->make($teaType);
+    }
+
+    public function serve()
+    {
+        foreach ($this->orders as $table => $tea) {
+            echo "Serving tea to table# " . $table;
+        }
+    }
+}
+```
+
+And it can be used as below:
+
+```php
+$teaMaker = new TeaMaker();
+$shop = new TeaShop($teaMaker);
+
+$shop->takeOrder('less sugar', 1);
+$shop->takeOrder('more milk', 2);
+$shop->takeOrder('without sugar', 5);
+
+$shop->serve();
+// Serving tea to table# 1
+// Serving tea to table# 2
+// Serving tea to table# 5
+```
+
+## Key Participants
+
+<AccordionGroup>
+  <Accordion title="Flyweight">
+    Declares an interface through which flyweights can receive and act on extrinsic state (in our example: `KarakTea`)
+  </Accordion>
+  
+  <Accordion title="Flyweight Factory">
+    Creates and manages flyweight objects and ensures proper sharing (in our example: `TeaMaker`)
+  </Accordion>
+  
+  <Accordion title="Client">
+    Maintains references to flyweights and computes/stores extrinsic state (in our example: `TeaShop`)
+  </Accordion>
+</AccordionGroup>
+
+## Intrinsic vs Extrinsic State
+
+<Info>
+**Intrinsic State**: Stored in the flyweight; it's independent of the flyweight's context and sharable.
+
+**Extrinsic State**: Depends on and varies with the flyweight's context and therefore cannot be shared.
+</Info>
+
+In our example:
+- **Intrinsic**: The tea type itself (stored in flyweight)
+- **Extrinsic**: The table number (stored by client)
+
+## Memory Savings Visualization
+
+### Without Flyweight
+```
+Table 1 → New KarakTea('less sugar')
+Table 2 → New KarakTea('more milk')
+Table 3 → New KarakTea('less sugar')  // Duplicate!
+Table 4 → New KarakTea('more milk')  // Duplicate!
+
+Total: 4 objects
+```
+
+### With Flyweight
+```
+Table 1 → Shared KarakTea('less sugar')
+Table 2 → Shared KarakTea('more milk')
+Table 3 → Shared KarakTea('less sugar')  // Reused!
+Table 4 → Shared KarakTea('more milk')  // Reused!
+
+Total: 2 objects (50% reduction)
+```
+
+## When to Use?
+
+<Info>
+Use the Flyweight pattern when:
+- An application uses a large number of objects
+- Storage costs are high because of the sheer quantity of objects
+- Most object state can be made extrinsic
+- Many groups of objects may be replaced by relatively few shared objects
+- The application doesn't depend on object identity
+</Info>
+
+## Benefits
+
+- **Memory Reduction**: Can save huge amounts of memory when dealing with large numbers of similar objects
+- **Performance**: Reduces object creation overhead
+- **Centralized State**: Shared intrinsic state is kept in one place
+
+## Considerations
+
+<Warning>
+- Runtime costs: May introduce overhead for computing/transferring extrinsic state
+- Code complexity: Makes code more complex
+- Thread safety: Shared flyweights must be immutable or thread-safe
+</Warning>
+
+## Real-World Applications
+
+<CardGroup cols={2}>
+  <Card title="Text Editors" icon="file-text">
+    Characters in documents - each character type is a flyweight
+  </Card>
+  
+  <Card title="Game Development" icon="gamepad">
+    Trees, bullets, particles - sharing textures and models
+  </Card>
+  
+  <Card title="String Pools" icon="font">
+    String interning in Java, Python to reuse string objects
+  </Card>
+  
+  <Card title="Database Connections" icon="database">
+    Connection pooling reuses database connections
+  </Card>
+</CardGroup>
+
+## Example: Text Formatting
+
+```php
+// Flyweight - shared character formatting
+class CharacterStyle
+{
+    private $font;
+    private $size;
+    private $color;
+    
+    public function __construct($font, $size, $color)
+    {
+        $this->font = $font;
+        $this->size = $size;
+        $this->color = $color;
+    }
+}
+
+// Factory
+class StyleFactory
+{
+    private $styles = [];
+    
+    public function getStyle($font, $size, $color)
+    {
+        $key = "$font-$size-$color";
+        
+        if (!isset($this->styles[$key])) {
+            $this->styles[$key] = new CharacterStyle($font, $size, $color);
+        }
+        
+        return $this->styles[$key];
+    }
+}
+
+// Client - stores extrinsic state (position)
+class Character
+{
+    private $char;
+    private $position;
+    private $style; // Shared flyweight
+    
+    public function __construct($char, $position, CharacterStyle $style)
+    {
+        $this->char = $char;
+        $this->position = $position; // Extrinsic
+        $this->style = $style;        // Intrinsic (shared)
+    }
+}
+```
+
+## Pattern Implementation Checklist
+
+<Steps>
+  <Step title="Identify intrinsic state">
+    Determine which data can be shared across multiple objects
+  </Step>
+  
+  <Step title="Identify extrinsic state">
+    Determine which data is unique to each context
+  </Step>
+  
+  <Step title="Create flyweight class">
+    Store only intrinsic state in this class
+  </Step>
+  
+  <Step title="Create factory">
+    Manage flyweight pool and ensure proper sharing
+  </Step>
+  
+  <Step title="Update client">
+    Client stores extrinsic state and references flyweights
+  </Step>
+</Steps>
+
+## Related Patterns
+
+- **Composite**: Flyweight is often combined with Composite to implement shared leaf nodes
+- **State and Strategy**: These can be implemented as Flyweights
+- **Singleton**: Flyweight factory is often a Singleton

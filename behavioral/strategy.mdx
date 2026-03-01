@@ -1,0 +1,103 @@
+---
+title: 'Strategy'
+description: 'Switch algorithms or strategies dynamically based on the situation'
+icon: 'chess'
+---
+
+## Real World Example
+
+Consider the example of sorting, we implemented bubble sort but the data started to grow and bubble sort started getting very slow. In order to tackle this we implemented Quick sort. But now although the quick sort algorithm was doing better for large datasets, it was very slow for smaller datasets. In order to handle this we implemented a strategy where for small datasets, bubble sort will be used and for larger, quick sort.
+
+## In Plain Words
+
+<Note>
+Strategy pattern allows you to switch the algorithm or strategy based upon the situation.
+</Note>
+
+## Wikipedia Says
+
+> In computer programming, the strategy pattern (also known as the policy pattern) is a behavioural software design pattern that enables an algorithm's behavior to be selected at runtime.
+
+## Programmatic Example
+
+Translating our example from above. First of all we have our strategy interface and different strategy implementations:
+
+```php
+interface SortStrategy
+{
+    public function sort(array $dataset): array;
+}
+
+class BubbleSortStrategy implements SortStrategy
+{
+    public function sort(array $dataset): array
+    {
+        echo "Sorting using bubble sort";
+
+        // Do sorting
+        return $dataset;
+    }
+}
+
+class QuickSortStrategy implements SortStrategy
+{
+    public function sort(array $dataset): array
+    {
+        echo "Sorting using quick sort";
+
+        // Do sorting
+        return $dataset;
+    }
+}
+```
+
+And then we have our client that is going to use any strategy:
+
+```php
+class Sorter
+{
+    protected $sorterSmall;
+    protected $sorterBig;
+
+    public function __construct(SortStrategy $sorterSmall, SortStrategy $sorterBig)
+    {
+        $this->sorterSmall = $sorterSmall;
+        $this->sorterBig = $sorterBig;
+    }
+
+    public function sort(array $dataset): array
+    {
+        if (count($dataset) > 5) {
+            return $this->sorterBig->sort($dataset);
+        } else {
+            return $this->sorterSmall->sort($dataset);
+        }
+    }
+}
+```
+
+And it can be used as:
+
+```php
+$smalldataset = [1, 3, 4, 2];
+$bigdataset = [1, 4, 3, 2, 8, 10, 5, 6, 9, 7];
+
+$sorter = new Sorter(new BubbleSortStrategy(), new QuickSortStrategy());
+
+$sorter->sort($dataset); // Output : Sorting using bubble sort
+
+$sorter->sort($bigdataset); // Output : Sorting using quick sort
+```
+
+## Key Points
+
+<Tip>
+- Defines a family of algorithms and makes them interchangeable
+- Encapsulates each algorithm and makes them interchangeable at runtime
+- Eliminates conditional statements for selecting algorithms
+- Follows the Open/Closed Principle - easy to add new strategies
+</Tip>
+
+<Info>
+The Strategy pattern is particularly useful when you have multiple algorithms for a specific task and you want to switch between them dynamically, or when you want to isolate the implementation details of an algorithm from the code that uses it.
+</Info>

@@ -1,0 +1,140 @@
+---
+title: 'Adapter Pattern'
+description: 'Wrap an otherwise incompatible object to make it compatible with another class'
+---
+
+## Real World Example
+
+<Note>
+Consider that you have some pictures in your memory card and you need to transfer them to your computer. In order to transfer them you need some kind of adapter that is compatible with your computer ports so that you can attach memory card to your computer. In this case card reader is an adapter.
+</Note>
+
+Other examples:
+- A power adapter that makes a three-legged plug compatible with a two-pronged outlet
+- A translator translating words spoken by one person to another
+
+## In Plain Words
+
+Adapter pattern lets you wrap an otherwise incompatible object in an adapter to make it compatible with another class.
+
+## Wikipedia Definition
+
+> In software engineering, the adapter pattern is a software design pattern that allows the interface of an existing class to be used as another interface. It is often used to make existing classes work with others without modifying their source code.
+
+## Programmatic Example
+
+Consider a game where there is a hunter and he hunts lions.
+
+First we have an interface `Lion` that all types of lions have to implement:
+
+```php
+interface Lion
+{
+    public function roar();
+}
+
+class AfricanLion implements Lion
+{
+    public function roar()
+    {
+    }
+}
+
+class AsianLion implements Lion
+{
+    public function roar()
+    {
+    }
+}
+```
+
+And hunter expects any implementation of `Lion` interface to hunt:
+
+```php
+class Hunter
+{
+    public function hunt(Lion $lion)
+    {
+        $lion->roar();
+    }
+}
+```
+
+Now let's say we have to add a `WildDog` in our game so that hunter can hunt that also. But we can't do that directly because dog has a different interface. To make it compatible for our hunter, we will have to create an adapter that is compatible:
+
+```php
+// This needs to be added to the game
+class WildDog
+{
+    public function bark()
+    {
+    }
+}
+
+// Adapter around wild dog to make it compatible with our game
+class WildDogAdapter implements Lion
+{
+    protected $dog;
+
+    public function __construct(WildDog $dog)
+    {
+        $this->dog = $dog;
+    }
+
+    public function roar()
+    {
+        $this->dog->bark();
+    }
+}
+```
+
+And now the `WildDog` can be used in our game using `WildDogAdapter`:
+
+```php
+$wildDog = new WildDog();
+$wildDogAdapter = new WildDogAdapter($wildDog);
+
+$hunter = new Hunter();
+$hunter->hunt($wildDogAdapter);
+```
+
+## Key Participants
+
+<AccordionGroup>
+  <Accordion title="Target">
+    The interface that the client expects to work with (in our example: `Lion`)
+  </Accordion>
+  
+  <Accordion title="Adaptee">
+    The existing class that needs adapting (in our example: `WildDog`)
+  </Accordion>
+  
+  <Accordion title="Adapter">
+    The class that makes the Adaptee compatible with the Target interface (in our example: `WildDogAdapter`)
+  </Accordion>
+  
+  <Accordion title="Client">
+    The code that uses the Target interface (in our example: `Hunter`)
+  </Accordion>
+</AccordionGroup>
+
+## When to Use?
+
+<Info>
+Use the Adapter pattern when:
+- You want to use an existing class, but its interface doesn't match the one you need
+- You need to create a reusable class that cooperates with unrelated classes with incompatible interfaces
+- You need to use several existing subclasses, but it's impractical to adapt their interface by subclassing each one
+</Info>
+
+## Benefits
+
+- **Single Responsibility Principle**: You can separate the interface conversion code from the primary business logic
+- **Open/Closed Principle**: You can introduce new types of adapters without breaking existing client code
+- **Flexibility**: Makes incompatible interfaces work together
+
+## Related Patterns
+
+- **Bridge**: Similar structure but different intent - Bridge separates abstraction from implementation, while Adapter makes existing interfaces compatible
+- **Decorator**: Enhances an object without changing its interface, while Adapter changes the interface
+- **Proxy**: Provides the same interface, while Adapter provides a different interface

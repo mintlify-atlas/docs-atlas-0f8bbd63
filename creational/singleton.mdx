@@ -1,0 +1,106 @@
+---
+title: 'Singleton'
+description: 'Ensure that only one object of a particular class is ever created'
+icon: 'ring'
+---
+
+## Real-World Example
+
+There can only be one president of a country at a time. The same president has to be brought to action, whenever duty calls. President here is singleton.
+
+## In Plain Words
+
+Ensures that only one object of a particular class is ever created.
+
+## Wikipedia Says
+
+<Note>
+In software engineering, the singleton pattern is a software design pattern that restricts the instantiation of a class to one object. This is useful when exactly one object is needed to coordinate actions across the system.
+</Note>
+
+## Important Warning
+
+<Warning>
+Singleton pattern is actually considered an anti-pattern and overuse of it should be avoided. It is not necessarily bad and could have some valid use-cases but should be used with caution because it introduces a global state in your application and change to it in one place could affect in the other areas and it could become pretty difficult to debug. The other bad thing about them is it makes your code tightly coupled plus mocking the singleton could be difficult.
+</Warning>
+
+## Programmatic Example
+
+To create a singleton, make the constructor private, disable cloning, disable extension and create a static variable to house the instance:
+
+```php
+final class President
+{
+    private static $instance;
+
+    private function __construct()
+    {
+        // Hide the constructor
+    }
+
+    public static function getInstance(): President
+    {
+        if (!self::$instance) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
+    private function __clone()
+    {
+        // Disable cloning
+    }
+
+    private function __wakeup()
+    {
+        // Disable unserialize
+    }
+}
+```
+
+Then in order to use:
+
+```php
+$president1 = President::getInstance();
+$president2 = President::getInstance();
+
+var_dump($president1 === $president2); // true
+```
+
+## When to Use?
+
+<AccordionGroup>
+  <Accordion title="When exactly one instance is needed">
+    Use Singleton when exactly one instance of a class is needed to coordinate actions across the system. For example, a single database connection, a logger, or a configuration manager.
+  </Accordion>
+  <Accordion title="When you need global access">
+    When you need a global point of access to a resource, but want to ensure only one instance exists.
+  </Accordion>
+</AccordionGroup>
+
+## Alternatives to Consider
+
+<Warning>
+Before using Singleton, consider these alternatives:
+
+- **Dependency Injection**: Pass the instance as a parameter rather than using a global instance
+- **Service Container**: Use a container to manage single instances
+- **Static Classes**: If you don't need instance state, consider using static methods
+</Warning>
+
+<Tip>
+If you're using modern PHP frameworks (Laravel, Symfony, etc.), they typically provide dependency injection containers that can manage singleton instances for you in a more testable way.
+</Tip>
+
+## Common Use Cases
+
+While Singleton should be used sparingly, some legitimate use cases include:
+
+- Database connection pools
+- Configuration managers
+- Logging services
+- Cache managers
+- Thread pools
+
+However, in most modern applications, these are better handled through dependency injection containers rather than implementing the Singleton pattern directly.

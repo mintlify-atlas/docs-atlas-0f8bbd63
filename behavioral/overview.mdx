@@ -1,0 +1,67 @@
+---
+title: 'Behavioral Patterns Overview'
+description: 'Learn about behavioral design patterns that focus on communication between objects'
+icon: 'shapes'
+---
+
+## What are Behavioral Patterns?
+
+<Info>
+Behavioral patterns are concerned with assignment of responsibilities between objects. What makes them different from structural patterns is they don't just specify the structure but also outline the patterns for message passing/communication between them.
+</Info>
+
+In other words, they assist in answering "How to run a behavior in software component?"
+
+## Definition
+
+According to Wikipedia:
+
+> In software engineering, behavioral design patterns are design patterns that identify common communication patterns between objects and realize these patterns. By doing so, these patterns increase flexibility in carrying out this communication.
+
+## Available Patterns
+
+This section covers the following behavioral design patterns:
+
+<CardGroup cols={2}>
+  <Card title="Chain of Responsibility" icon="link" href="/behavioral/chain-of-responsibility">
+    Build a chain of objects to handle requests
+  </Card>
+  <Card title="Command" icon="terminal" href="/behavioral/command">
+    Encapsulate actions as objects
+  </Card>
+  <Card title="Iterator" icon="arrow-right" href="/behavioral/iterator">
+    Access elements sequentially without exposing structure
+  </Card>
+  <Card title="Mediator" icon="users" href="/behavioral/mediator">
+    Control interaction between objects through a mediator
+  </Card>
+  <Card title="Memento" icon="clock-rotate-left" href="/behavioral/memento">
+    Capture and restore object state
+  </Card>
+  <Card title="Observer" icon="eye" href="/behavioral/observer">
+    Notify dependents when object state changes
+  </Card>
+  <Card title="Visitor" icon="user" href="/behavioral/visitor">
+    Add operations to objects without modifying them
+  </Card>
+  <Card title="Strategy" icon="chess" href="/behavioral/strategy">
+    Switch algorithms based on the situation
+  </Card>
+  <Card title="State" icon="circle-half-stroke" href="/behavioral/state">
+    Change behavior when state changes
+  </Card>
+  <Card title="Template Method" icon="file-code" href="/behavioral/template-method">
+    Define algorithm skeleton, defer steps to subclasses
+  </Card>
+</CardGroup>
+
+## When to Use Behavioral Patterns
+
+Consider using behavioral patterns when:
+
+- You need to define communication between multiple objects
+- You want to encapsulate behavior or algorithms
+- You need to implement undo/redo functionality
+- You want to decouple senders and receivers of requests
+- You need to traverse collections in different ways
+- You want to add operations without modifying existing code
